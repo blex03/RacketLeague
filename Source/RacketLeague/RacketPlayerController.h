@@ -22,5 +22,8 @@ public:
 
 	UPROPERTY()
 	class UInputAction* MoveAction;
+
+	UPROPERTY()
+	class UInputAction* RotateAction;
 	
 };

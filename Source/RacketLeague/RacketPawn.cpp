@@ -29,6 +29,7 @@ ARacketPawn::ARacketPawn()
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
 	MoveScale = 1.f;
+	RotateScale = 50.f;
 }
 
 
@@ -41,6 +42,7 @@ void ARacketPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	ARacketPlayerController* RPC = Cast<ARacketPlayerController>(Controller);
 	check(EIC && RPC);
 	EIC->BindAction(RPC->MoveAction, ETriggerEvent::Triggered, this, &ARacketPawn::Move);
+	EIC->BindAction(RPC->RotateAction, ETriggerEvent::Triggered, this, &ARacketPawn::Rotate);
 
 	ULocalPlayer* LocalPlayer = RPC->GetLocalPlayer();
 	check(LocalPlayer);
@@ -54,7 +56,17 @@ void ARacketPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void ARacketPawn::Move(const FInputActionValue& ActionValue)
 {
 	FVector Input = ActionValue.Get<FInputActionValue::Axis3D>();
-
+	 
 	AddMovementInput(GetActorRotation().RotateVector(Input), MoveScale);
+}
+
+void ARacketPawn::Rotate(const FInputActionValue& ActionValue)
+{
+	FRotator Input(ActionValue[0], ActionValue[1], ActionValue[2]);
+	Input *= GetWorld()->GetDeltaSeconds() * RotateScale;
+	Input += GetActorRotation();
+	Input.Pitch = FMath::ClampAngle(Input.Pitch, -89.9f, 89.9f);
+	Input.Roll = 0;
+	SetActorRotation(Input);
 }
 

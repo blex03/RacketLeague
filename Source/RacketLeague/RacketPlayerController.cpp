@@ -4,6 +4,27 @@
 #include "RacketPlayerController.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "InputModifiers.h"
+
+static void MapKey(UInputMappingContext* InputMappingContext, UInputAction* InputAction, FKey Key,
+	bool bNegate = false,
+	bool bSwizzle = false, EInputAxisSwizzle SwizzleOrder = EInputAxisSwizzle::YXZ)
+{
+	FEnhancedActionKeyMapping& Mapping = InputMappingContext->MapKey(InputAction, Key);
+	UObject* Outer = InputMappingContext->GetOuter();
+
+	if (bNegate)
+	{
+		UInputModifierNegate* Negate = NewObject<UInputModifierNegate>(Outer);
+		Mapping.Modifiers.Add(Negate);
+	}
+
+	if (bSwizzle)
+	{
+		UInputModifierSwizzleAxis* Swizzle = NewObject<UInputModifierSwizzleAxis>(Outer);
+		Mapping.Modifiers.Add(Swizzle);
+	}
+}
 
 void ARacketPlayerController::SetupInputComponent()
 {
@@ -12,7 +33,17 @@ void ARacketPlayerController::SetupInputComponent()
 	PawnMappingContext = NewObject<UInputMappingContext>(this);
 
 	MoveAction = NewObject<UInputAction>(this);
-	MoveAction->ValueType = EInputActionValueType::Axis3D;
-	PawnMappingContext->MapKey(MoveAction, EKeys::W);
+	MoveAction->ValueType = EInputActionValueType::Axis2D;
+	MapKey(PawnMappingContext, MoveAction, EKeys::W);
+	MapKey(PawnMappingContext, MoveAction, EKeys::S, true);
+	MapKey(PawnMappingContext, MoveAction, EKeys::A, true, true);
+	MapKey(PawnMappingContext, MoveAction, EKeys::D, false, true);
+
+	RotateAction = NewObject<UInputAction>(this);
+	RotateAction->ValueType = EInputActionValueType::Axis3D;
+	MapKey(PawnMappingContext, RotateAction, EKeys::MouseY);
+	MapKey(PawnMappingContext, RotateAction, EKeys::MouseX, false, true);
+
+
 }
 

@@ -19,6 +19,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void Move(const struct FInputActionValue& ActionValue);
+
+	void Rotate(const struct FInputActionValue& ActionValue);
 	
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* Box;
@@ -37,4 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float MoveScale;
+
+	UPROPERTY(EditAnywhere)
+	float RotateScale;
 };
