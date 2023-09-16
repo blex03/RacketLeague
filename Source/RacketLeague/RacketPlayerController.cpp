@@ -40,7 +40,7 @@ void ARacketPlayerController::SetupInputComponent()
 	MapKey(PawnMappingContext, MoveAction, EKeys::D, false, true);
 
 	RotateAction = NewObject<UInputAction>(this);
-	RotateAction->ValueType = EInputActionValueType::Axis3D;
+	RotateAction->ValueType = EInputActionValueType::Axis2D;
 	MapKey(PawnMappingContext, RotateAction, EKeys::MouseY);
 	MapKey(PawnMappingContext, RotateAction, EKeys::MouseX, false, true);
 

@@ -67,6 +67,7 @@ void ARacketPawn::Rotate(const FInputActionValue& ActionValue)
 	Input += GetActorRotation();
 	Input.Pitch = FMath::ClampAngle(Input.Pitch, -89.9f, 89.9f);
 	Input.Roll = 0;
+
 	SetActorRotation(Input);
 }
 
