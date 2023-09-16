@@ -18,6 +18,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Move(const struct FInputActionValue& ActionValue);
+	
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* Box;
 
@@ -30,4 +32,9 @@ public:
 	UPROPERTY(EditAnywhere) 
 	class UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+	class UFloatingPawnMovement* Movement;
+
+	UPROPERTY(EditAnywhere)
+	float MoveScale;
 };
