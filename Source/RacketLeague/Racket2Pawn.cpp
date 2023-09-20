@@ -52,12 +52,13 @@ void ARacket2Pawn::BeginPlay()
 
 void ARacket2Pawn::Move(const FInputActionValue& Value)
 {
-	const float DirectionValue = Value.Get<float>() * MoveScale;
-	if (Controller && (DirectionValue != 0.f))
-	{
-		FVector Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirectionValue);
-	}
+	const FVector2D MovementVector = Value.Get<FVector2D>() * MoveScale;
+
+	FVector Forward = GetActorForwardVector();
+	AddMovementInput(Forward, MovementVector.Y);
+
+	FVector Right = GetActorRightVector();
+	AddMovementInput(Right, MovementVector.X);
 }
 
 void ARacket2Pawn::Look(const FInputActionValue& Value)
