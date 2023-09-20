@@ -55,11 +55,19 @@ void ARacket2Pawn::Move(const FInputActionValue& Value)
 	const FVector2D MovementVector = Value.Get<FVector2D>() * MoveScale;
 
 	FVector Forward = GetActorForwardVector();
-	AddMovementInput(Forward, MovementVector.Y);
-
 	FVector Right = GetActorRightVector();
-	AddMovementInput(Right, MovementVector.X);
+
+	if (MovementVector.X != 0 && MovementVector.Y != 0)
+	{
+		AddMovementInput(Forward, (MovementVector.Y * MoveScale) / sqrt(2));
+		AddMovementInput(Right, (MovementVector.X * MoveScale) / sqrt(2));
+	}
+	else {
+		AddMovementInput(Forward, MovementVector.Y * MoveScale);
+		AddMovementInput(Right, MovementVector.X * MoveScale);
+	}
 }
+
 
 void ARacket2Pawn::Look(const FInputActionValue& Value)
 {
