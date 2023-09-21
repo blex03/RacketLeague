@@ -46,7 +46,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-	UBoxComponent* Box;
+	UStaticMeshComponent* Collision;
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Racket;

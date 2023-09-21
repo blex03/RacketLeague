@@ -17,14 +17,14 @@
 // Sets default values
 ARacket2Pawn::ARacket2Pawn()
 {
-	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	SetRootComponent(Box);
+	Collision = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Collision"));
+	SetRootComponent(Collision);
 
 	Racket = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Racket"));
-	Racket->SetupAttachment(Box);
+	Racket->SetupAttachment(Collision);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(Box);
+	SpringArm->SetupAttachment(Collision);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
