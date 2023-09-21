@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Racket2Pawn.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
@@ -11,6 +9,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Math/Vector2D.h"
+#include "Components/PrimitiveComponent.h"
 
 
 
@@ -33,6 +32,7 @@ ARacket2Pawn::ARacket2Pawn()
 
 	MoveScale = 1.f;
 	RotateScale = 50.f;
+	JumpScale = 1.f;
 }
 
 // Called when the game starts or when spawned
@@ -80,6 +80,21 @@ void ARacket2Pawn::Look(const FInputActionValue& Value)
 	
 }
 
+
+void ARacket2Pawn::Jump(const FInputActionValue& Value)
+{
+	const bool JumpValue = Value.Get<bool>();
+
+	FVector Impulse(0, 0, 500);
+
+	if (JumpValue)
+	{
+		Racket->AddImpulse(Impulse);
+	}
+
+}
+
+
 // Called to bind functionality to input
 void ARacket2Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -89,6 +104,7 @@ void ARacket2Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Look);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Jump);
 	}
 
 }
