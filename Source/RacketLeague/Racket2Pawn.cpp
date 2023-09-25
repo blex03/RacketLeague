@@ -16,6 +16,9 @@
 // Sets default values
 ARacket2Pawn::ARacket2Pawn()
 {
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
 	Collision = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Collision"));
 	SetRootComponent(Collision);
 
@@ -33,6 +36,7 @@ ARacket2Pawn::ARacket2Pawn()
 	MoveScale = 1.f;
 	RotateScale = 50.f;
 	JumpScale = 1.f;
+	isCanceled = true;
 }
 
 // Called when the game starts or when spawned
@@ -83,15 +87,43 @@ void ARacket2Pawn::Look(const FInputActionValue& Value)
 
 void ARacket2Pawn::Jump(const FInputActionValue& Value)
 {
-	const bool JumpValue = Value.Get<bool>();
+	bool CanJump = Value.Get<bool>();
+	bool JumpReset;
+	float ImpulseValue;
 
-	FVector Impulse(0, 0, 500);
-
-	if (JumpValue)
+	if (Racket->GetComponentVelocity().Z < 0)
 	{
-		Racket->AddImpulse(Impulse);
+		ImpulseValue = 10000 - (Racket->GetComponentVelocity().Z * 10);
+	}
+	else {
+		ImpulseValue = 10000;
+	} 
+
+	FVector Impulse(0, 0, ImpulseValue);
+	float MaxVelocity = 10;
+	float LastJumpTime = 0;
+	float CoolDown = 2.0;
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+
+
+	if (CurrentTime - LastJumpTime >= CoolDown) {
+		JumpReset = true;
+	}
+	else {
+		JumpReset = false;
 	}
 
+	if (CanJump && JumpReset && Racket->GetComponentVelocity().Z < MaxVelocity && isCanceled)
+	{
+		Racket->AddImpulse(Impulse);
+		LastJumpTime = CurrentTime;
+		isCanceled = false;
+	}
+}
+
+void ARacket2Pawn::JumpCancel(const FInputActionValue& Value)
+{
+	isCanceled = true;
 }
 
 
@@ -105,7 +137,13 @@ void ARacket2Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ARacket2Pawn::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ARacket2Pawn::JumpCancel);
 	}
 
+}
+
+void ARacket2Pawn::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 

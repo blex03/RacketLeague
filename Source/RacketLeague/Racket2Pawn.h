@@ -25,6 +25,8 @@ public:
 	// Sets default values for this pawn's properties
 	ARacket2Pawn();
 
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,8 +47,10 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
+	void JumpCancel(const FInputActionValue& Value);
 
 public:	
+	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
@@ -72,4 +76,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float JumpScale;
+
+	bool isCanceled;
+
 };
