@@ -21,10 +21,13 @@
 				"Editor"
 			]
 		},
-
 		{
 			"Name": "EnhancedInput",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"HoloLens",
+		"Windows"
 	]
 }
