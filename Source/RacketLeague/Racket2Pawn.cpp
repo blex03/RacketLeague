@@ -93,10 +93,10 @@ void ARacket2Pawn::Jump(const FInputActionValue& Value)
 
 	if (Racket->GetComponentVelocity().Z < 0)
 	{
-		ImpulseValue = 7500 - (Racket->GetComponentVelocity().Z * 10);
+		ImpulseValue = 5000 - (Racket->GetComponentVelocity().Z * 10);
 	}
 	else {
-		ImpulseValue = 7500;
+		ImpulseValue = 5000;
 	} 
 
 	FVector Impulse(0, 0, ImpulseValue);
