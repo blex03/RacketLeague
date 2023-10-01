@@ -56,7 +56,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Collision;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Racket;
 
 	UPROPERTY(EditAnywhere)

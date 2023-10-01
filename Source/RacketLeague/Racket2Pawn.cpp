@@ -102,7 +102,7 @@ void ARacket2Pawn::Jump(const FInputActionValue& Value)
 	FVector Impulse(0, 0, ImpulseValue);
 	float MaxVelocity = 10;
 	float LastJumpTime = 0;
-	float CoolDown = 2.0;
+	float CoolDown = 1.0;
 	float CurrentTime = GetWorld()->GetTimeSeconds();
 
 
@@ -125,7 +125,6 @@ void ARacket2Pawn::JumpCancel(const FInputActionValue& Value)
 {
 	isCanceled = true;
 }
-
 
 // Called to bind functionality to input
 void ARacket2Pawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
